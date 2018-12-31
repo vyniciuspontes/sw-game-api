@@ -1,15 +1,16 @@
 'use strict'
 
 import express from 'express';
-import bodyParser from 'body-parser';
 import './config/database.config';
-import configs from './config/server.config';
+import middlewareConfig from './config/middleware.config';
+import serverConfigs from './config/server.config';
+import restRouter from './api';
 
-const port = 3000;
+const server = express();
+middlewareConfig(server);
 
+server.use('/api', restRouter);
 
-const app = express();
+server.get('/', (req, res) => { res.send('Server is Running'); });
 
-app.use(bodyParser.urlencoded({ extended: false }));
-
-app.listen(port, () => console.log(`API server is running on port ${port}`));
+server.listen(serverConfigs.PORT, () => console.log(`API server is running on port ${serverConfigs.PORT}`));
