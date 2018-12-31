@@ -3,10 +3,10 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const planetModel = new Schema({
-    name: String,
-    climate: String,
-    terrain: String,
-    movieAppearances: Number
+    name: { type: String, required: true },
+    climate: { type: String, required: true },
+    terrain: { type: String, required: true },
+    movieAppearances: { type: Number, required: true },
 });
 
 export default mongoose.model('Planet', planetModel);

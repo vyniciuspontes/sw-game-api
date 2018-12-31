@@ -14,3 +14,5 @@ server.use('/api', restRouter);
 server.get('/', (req, res) => { res.send('Server is Running'); });
 
 server.listen(serverConfigs.PORT, () => console.log(`API server is running on port ${serverConfigs.PORT}`));
+
+export default server;
