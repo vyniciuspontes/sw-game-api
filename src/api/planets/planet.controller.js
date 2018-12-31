@@ -1,5 +1,6 @@
 import HTTPStatus from 'http-status';
 import Planet from './planet.model';
+import request from 'request';
 
 const notFoundMessage = 'resource not found';
 
@@ -37,10 +38,37 @@ export async function findAll(req, res) {
     }
 }
 
+function retrievePlanetMovieAppearances(planet) {
+    return new Promise((resolve, reject) => {
+        request.get(`https://swapi.co/api/planets/?search=${planet}`, { json: true }, (err, req, body) => {
+
+            if (err) return reject(error);
+
+            if (body.results.length > 0) {
+
+                resolve(body.results[0].films.length);
+            }
+
+            resolve(0);
+        });
+    });
+}
+
 export async function create(req, res) {
     try {
-        const newPlanet = await Planet.create(req.body);
+
+        const planetMovieAppearances = await retrievePlanetMovieAppearances(req.body.name);
+
+        const planetData = {
+            name: req.body.name,
+            climate: req.body.climate,
+            terrain: req.body.terrain,
+            movieAppearances: planetMovieAppearances
+        };
+
+        const newPlanet = await Planet.create(planetData);
         return res.status(HTTPStatus.CREATED).json(newPlanet);
+
     } catch (e) {
         return res.status(HTTPStatus.BAD_REQUEST).json(e);
     }
