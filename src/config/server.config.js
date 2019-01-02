@@ -1,10 +1,14 @@
 
 const defaultConfig = {
-    PORT: process.env.PORT || 3000,
+    PORT: process.env.PORT || 8080
 };
 
 const devConfig = {
     MONGO_URL: 'mongodb://localhost/startwars-dev'
+};
+
+const prodConfig = {
+    MONGO_URL: process.env.MONGODB_URI || 'mongodb://localhost/startwars-prod'
 };
 
 const testConfig = {
@@ -16,6 +20,8 @@ function getCurrentConfig(env) {
         return devConfig;
     } else if (env === 'test') {
         return testConfig;
+    }else if(env === 'production'){
+        return prodConfig;
     }
 }
 
