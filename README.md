@@ -29,6 +29,7 @@ API desenvolvida para o desafio "B2W backend" que lista, salva e deleta planetas
  
 ## Requisitos:
  - NodeJS 6+
+ - NPM
  - MongoDB
 
 ## Instalação:
