@@ -41,3 +41,5 @@ API desenvolvida para o desafio "B2W backend" que lista, salva e deleta planetas
 
 `npm test`
 
+![alt text](https://github.com/vyniciuspontes/sw-game-api/blob/master/images/tests.png?raw=true)
+
