@@ -2,17 +2,17 @@
 
 import express from 'express';
 import './config/database.config';
-import middlewareConfig from './config/middleware.config';
+import middlewaresConfig from './config/middlewares.config';
 import serverConfigs from './config/server.config';
 import restRouter from './api';
 
 const server = express();
-middlewareConfig(server);
+middlewaresConfig(server);
 
 server.use('/api', restRouter);
 
 server.get('/', (req, res) => { res.send('Server is Running'); });
 
-server.listen(serverConfigs.PORT, () => console.log(`API server is running on port ${serverConfigs.PORT}`));
+server.listen(serverConfigs.PORT, () => { if (process.env.NODE_ENV !== 'test') console.log(`API server is running on port ${serverConfigs.PORT}`) });
 
 export default server;

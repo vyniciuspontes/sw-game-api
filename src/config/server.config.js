@@ -12,7 +12,6 @@ const testConfig = {
 };
 
 function getCurrentConfig(env) {
-    console.log('Current env ->', env);
     if (env === 'development') {
         return devConfig;
     } else if (env === 'test') {

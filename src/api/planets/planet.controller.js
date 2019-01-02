@@ -1,6 +1,8 @@
 import HTTPStatus from 'http-status';
 import Planet from './planet.model';
 import request from 'request';
+import planetValidation from './planet.validation';
+import Joi from 'joi';
 
 const notFoundMessage = 'resource not found';
 
@@ -55,6 +57,7 @@ function retrievePlanetMovieAppearances(planet) {
 }
 
 export async function create(req, res) {
+
     try {
 
         const planetMovieAppearances = await retrievePlanetMovieAppearances(req.body.name);
