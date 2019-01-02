@@ -9,6 +9,7 @@ API desenvolvida para o desafio "B2W backend" que lista, salva e deleta planetas
 - NodeJS
 - MongoDB
 - Express
+- Mongoose
 - Babel
 - Joi
 - Chai
