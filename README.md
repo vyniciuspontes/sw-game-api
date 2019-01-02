@@ -32,7 +32,7 @@ API desenvolvida para o desafio "B2W backend" que lista, salva e deleta planetas
  - NPM
  - MongoDB
 
-## Instalação:
+## Instalação
 
 `npm install`
 
