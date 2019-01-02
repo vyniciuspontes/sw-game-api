@@ -24,7 +24,7 @@ API desenvolvida para o desafio "B2W backend" que lista, salva e deleta planetas
     "name": "Yavin IV",
     "terrain": "jungle, rainforests",
     "climate": "temperate, tropical"
-}`- Salva um planeta
+}`- Cria um planeta
 - DELETE api/planets/:id - Remove um planeta com :id específico
  
 ## Requisitos:
