@@ -12,16 +12,16 @@ let should = chai.should();
 chai.use(chaiHttp);
 
 describe('Planets', () => {
-    
+
     //Empty database
-    beforeEach((done) => { 
+    beforeEach((done) => {
         Planet.deleteMany({}, (err) => {
             done();
         });
     });
-    
+
     describe('/GET planets', () => {
-        it('it should GET all the Planets', (done) => {
+        it('it should GET all the planets', (done) => {
             chai.request(server)
                 .get('/api/planets')
                 .end((err, res) => {
@@ -31,17 +31,67 @@ describe('Planets', () => {
                     done();
                 });
         });
+
+        it('it should GET planet by given name', (done) => {
+            let planet = new Planet({
+                name: 'Yavin IV',
+                terrain: 'jungle, rainforests',
+                climate: 'temperate, tropical',
+                movieAppearances: 1
+            });
+
+            planet.save((err, newPlanet) => {
+                chai.request(server).get('/api/planets?name=Yavin IV').send().end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('array');
+                    res.body.should.have.lengthOf(1);
+                    res.body[0].should.have.property('name');
+                    res.body[0].should.have.property('terrain');
+                    res.body[0].should.have.property('climate');
+                    res.body[0].should.have.property('movieAppearances');
+                    res.body[0].should.have.property('_id').eql(newPlanet.id);
+                    done();
+                });
+            });
+
+        });
+
+    });
+
+    describe('/GET/:id planet', () => {
+        it('it should GET planet by given id', (done) => {
+            let planet = new Planet({
+                name: 'Yavin IV',
+                terrain: 'jungle, rainforests',
+                climate: 'temperate, tropical',
+                movieAppearances: 1
+            });
+
+            planet.save((err, newPlanet) => {
+                chai.request(server).get('/api/planets/' + newPlanet.id).send().end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('name');
+                    res.body.should.have.property('terrain');
+                    res.body.should.have.property('climate');
+                    res.body.should.have.property('movieAppearances');
+                    res.body.should.have.property('_id').eql(newPlanet.id);
+                    done();
+                });
+            });
+
+        });
     });
 
     describe('/POST planet', () => {
 
-        it('Should not POST a planet without name', (done) => { 
+        it('Should not POST a planet without name', (done) => {
             let planet = {
                 terrain: 'jungle, rainforests',
                 climate: 'temperate, tropical'
             };
 
-            chai.request(server).post('/api/planets').send(planet).end((err, res) => { 
+            chai.request(server).post('/api/planets').send(planet).end((err, res) => {
                 res.should.have.status(422);
                 res.body.should.be.a('object');
                 res.body.should.have.property('error');
@@ -58,7 +108,7 @@ describe('Planets', () => {
                 terrain: 'jungle, rainforests',
                 climate: 'temperate, tropical'
             };
-    
+
             chai.request(server).post('/api/planets').send(planet).end((err, res) => {
                 res.should.have.status(201);
                 res.body.should.be.a('object');
@@ -69,7 +119,43 @@ describe('Planets', () => {
                 done();
             });
         });
+
+        it('Should not have movie appearances if it\'s not present in the swapi.co', (done) => {
+            let planet = {
+                name: 'A cool movie name',
+                terrain: 'jungle, rainforests',
+                climate: 'temperate, tropical'
+            };
+
+            chai.request(server).post('/api/planets').send(planet).end((err, res) => {
+                res.should.have.status(201);
+                res.body.should.be.a('object');
+                res.body.should.have.property('name');
+                res.body.should.have.property('terrain');
+                res.body.should.have.property('climate');
+                res.body.should.have.property('movieAppearances').eql(0);
+                done();
+            });
+        });
     });
+
+    describe('/DELETE/:id planet', ()=> { 
+        it('Should delete a planet by given id', (done)=> { 
+            let planet = new Planet({
+                name: 'Yavin IV',
+                terrain: 'jungle, rainforests',
+                climate: 'temperate, tropical',
+                movieAppearances: 1
+            });
+
+            planet.save((err, newPlanet) => {
+                chai.request(server).delete('/api/planets/' + newPlanet.id).send().end((err, res) => {
+                    res.should.have.status(204);
+                    done();
+                });
+            });
+        });
+    })
 
 });
 
